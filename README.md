@@ -26,6 +26,8 @@ To start the project
 npm run dev
 ```
 
+Open [Planify](http://localhost:5000)
+
 ## Log in
 
 Email
