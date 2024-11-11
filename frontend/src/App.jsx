@@ -4,18 +4,29 @@ import Profile from './pages/Profile'
 import Space from './pages/Space'
 import Board from './pages/Board'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login'
+import { AuthProvider } from './context/AuthContext'
+import Register from './pages/Register'
+import PrivateRoute from "./components/PrivateRoute";
 
 
 function App() {
-  return (
-        <Router>
-            <Routes> 
-                <Route path="/" element={<Home />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/space" element={<Space />} />
-                <Route path="/board" element={<Board />} />
-            </Routes>
-        </Router>
+    return (
+        <AuthProvider>
+            <Router>
+                <Routes> 
+                    {/* Rutas públicas */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+
+                    {/* Rutas privadas */}
+                    <Route path="/" element={<PrivateRoute element={Home} />} />
+                    <Route path="/profile" element={<PrivateRoute element={Profile} />} />
+                    <Route path="/space" element={<PrivateRoute element={Space} />} />
+                    <Route path="/board" element={<PrivateRoute element={Board} />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
     )
 }
 
