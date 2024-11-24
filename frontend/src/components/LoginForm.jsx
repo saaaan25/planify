@@ -7,9 +7,13 @@ const LoginForm = () => {
     const [contrasena, setContrasena] = useState("");
     const [error, setError] = useState(false);
 
-    const { login } = useContext(AuthContext)
+    const { login, isAuthenticated } = useContext(AuthContext)
     const navigate = useNavigate();
 
+    if (isAuthenticated) {
+        navigate('/');
+    }
+    
     const handleSubmit = async(e) => {
         e.preventDefault()
 

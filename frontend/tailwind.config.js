@@ -11,7 +11,9 @@ export default {
         purple_2: '#b597f1',
         purple_3: '#5f44a5',
         purple_4: '#2e098f',
-        purple_5: '#2c156d'
+        purple_5: '#2c156d',
+        black_1: "#231e2a",
+        grey_1: "#f2f2f2"
       },
       fontFamily: {
         sans: ['Comfortaa', 'sans-serif'],

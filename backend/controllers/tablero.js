@@ -30,14 +30,38 @@ exports.getTableroById = (req, res) => {
 
 // CREATE
 exports.createTablero = (req, res) => {
-    const { idTablero, tabTitulo, tabFechaCreacion, tabColor, idEspacio } = req.body;
-    const query = 'INSERT INTO tablero (idTablero, tabTitulo, tabFechaCreacion, tabColor, idEspacio) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [idTablero, tabTitulo, tabFechaCreacion, tabColor, idEspacio], (err, result) => {
+    const { tabTitulo, tabFechaCreacion, tabColor, idEspacio } = req.body;
+
+    // Consulta para obtener el último ID de tablero
+    const getLastIdQuery = "SELECT idTablero FROM tablero ORDER BY idTablero DESC LIMIT 1";
+
+    db.query(getLastIdQuery, (err, result) => {
         if (err) {
-            console.error('Error al insertar tablero:', err);
-            return res.status(500).json({ message: 'Error al insertar tablero' });
+            console.error("Error al obtener el último ID de tablero:", err);
+            return res.status(500).json({ message: "Error al generar el identificador de tablero" });
         }
-        res.status(201).json({ message: 'Tablero creado correctamente', id: result.insertId });
+
+        // Generar el nuevo ID
+        let newIdTablero = "T000000001"; // ID inicial por defecto
+        if (result.length > 0) {
+            const lastId = result[0].idTablero; // Último ID en la base de datos
+            const numericPart = parseInt(lastId.slice(1)); // Parte numérica del ID
+            const nextNumericPart = (numericPart + 1).toString().padStart(9, "0"); // Incrementar y rellenar con ceros
+            newIdTablero = `T${nextNumericPart}`;
+        }
+
+        // Consulta para insertar el nuevo tablero
+        const insertQuery =
+            "INSERT INTO tablero (idTablero, tabTitulo, tabFechaCreacion, tabColor, idEspacio) VALUES (?, ?, ?, ?, ?)";
+
+        db.query(insertQuery, [newIdTablero, tabTitulo, tabFechaCreacion, tabColor, idEspacio], (err, result) => {
+            if (err) {
+                console.error("Error al insertar tablero:", err);
+                return res.status(500).json({ message: "Error al insertar tablero" });
+            }
+
+            res.status(201).json({ message: "Tablero creado correctamente", id: newIdTablero });
+        });
     });
 };
 

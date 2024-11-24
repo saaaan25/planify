@@ -30,23 +30,50 @@ exports.getEspacioById = (req, res) => {
 
 // CREATE
 exports.createEspacio = (req, res) => {
-    const { idEspacio, espTitulo, espColor, espFechaCreacion, idUsuario } = req.body;
-    const query = 'INSERT INTO espacio (idEspacio, espTitulo, espColor, espFechaCreacion, idUsuario) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [idEspacio, espTitulo, espColor, espFechaCreacion, idUsuario], (err, result) => {
+    const { espTitulo, espColor, espFechaCreacion, idUsuario } = req.body;
+
+    const getLastIdQuery = 'SELECT idEspacio FROM espacio ORDER BY idEspacio DESC LIMIT 1';
+
+    db.query(getLastIdQuery, (err, result) => {
         if (err) {
-            console.error('Error al insertar espacio:', err);
-            return res.status(500).json({ message: 'Error al insertar espacio' });
+            console.error('Error al obtener el último idEspacio:', err);
+            return res.status(500).json({ message: 'Error al generar el ID del espacio' });
         }
-        res.status(201).json({ message: 'Espacio creado correctamente', id: result.insertId });
+
+        console.log('Último idEspacio:', result);
+
+        let newIdEspacio;
+        if (result.length === 0) {
+            newIdEspacio = 'E000000001';
+        } else {
+            const lastId = result[0].idEspacio;
+            const numericPart = parseInt(lastId.slice(1));
+            newIdEspacio = `E${String(numericPart + 1).padStart(9, '0')}`;
+        }
+
+        console.log('Nuevo idEspacio generado:', newIdEspacio);
+        if (!newIdEspacio) {
+            return res.status(400).json({ message: 'Error al generar el nuevo idEspacio' });
+        }
+
+        const insertQuery = 'INSERT INTO espacio (idEspacio, espTitulo, espColor, espFechaCreacion, idUsuario) VALUES (?, ?, ?, ?, ?)';
+        db.query(insertQuery, [newIdEspacio, espTitulo, espColor, espFechaCreacion, idUsuario], (err, result) => {
+            if (err) {
+                console.error('Error al insertar espacio:', err);
+                return res.status(500).json({ message: 'Error al insertar espacio' });
+            }
+            res.status(201).json({ message: 'Espacio creado correctamente', idEspacio: newIdEspacio });
+        });
     });
 };
+
 
 // UPDATE
 exports.updateEspacio = (req, res) => {
     const { id } = req.params;
-    const { espTitulo, espColor, espFechaCreacion, idUsuario } = req.body;
-    const query = 'UPDATE espacio SET espTitulo = ?, espColor = ?, espFechaCreacion = ?, idUsuario = ? WHERE idEspacio = ?';
-    db.query(query, [espTitulo, espColor, espFechaCreacion, idUsuario, id], (err, result) => {
+    const { espTitulo, espColor, idUsuario } = req.body;
+    const query = 'UPDATE espacio SET espTitulo = ?, espColor = ?, idUsuario = ? WHERE idEspacio = ?';
+    db.query(query, [espTitulo, espColor, idUsuario, id], (err, result) => {
         if (err) {
             console.error('Error al actualizar espacio:', err);
             return res.status(500).json({ message: 'Error al actualizar espacio' });

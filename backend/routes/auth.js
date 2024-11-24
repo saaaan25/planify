@@ -20,15 +20,25 @@ router.post('/login', (req, res) => {
             return res.status(401).json({ message: 'Credenciales incorrectas' });
         }
 
-        const user = results[0];
+        const user = results[0]; 
         const isPasswordValid = contrasena === user.contrasena;
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Credenciales incorrectas' });
         }
 
-        const token = jwt.sign({ id: user.idUsuario, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: 'Inicio de sesión exitoso', token, user: { id: user.idUsuario, email: user.email, nombre: user.nombre } });
+        const token = jwt.sign(
+            { id: user.idUsuario, email: user.email }, 
+            JWT_SECRET, 
+            { expiresIn: '1h' }
+        );
+        
+
+        res.json({
+            message: 'Inicio de sesión exitoso',
+            token,
+            user, 
+        });
     });
 });
 

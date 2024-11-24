@@ -18,6 +18,7 @@ app.use('/api/espacios', require('./routes/espacio'));
 app.use('/api/listas', require('./routes/lista'));
 app.use('/api/tableros', require('./routes/tablero'));
 app.use('/api/usuarios', require('./routes/usuario'));
+app.use('/api/usuario_espacio', require('./routes/usuarioEspacio'));
 
 // BASE ROUTE
 app.get('/', (req, res) => {

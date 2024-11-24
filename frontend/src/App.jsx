@@ -22,8 +22,8 @@ function App() {
                     {/* Rutas privadas */}
                     <Route path="/" element={<PrivateRoute element={Home} />} />
                     <Route path="/profile" element={<PrivateRoute element={Profile} />} />
-                    <Route path="/space" element={<PrivateRoute element={Space} />} />
-                    <Route path="/board" element={<PrivateRoute element={Board} />} />
+                    <Route path="/:idEspacio" element={<PrivateRoute element={Space} />} />
+                    <Route path="/:idEspacio/:idTablero" element={<PrivateRoute element={Board} />} />
                 </Routes>
             </Router>
         </AuthProvider>
