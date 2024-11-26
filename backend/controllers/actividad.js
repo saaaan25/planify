@@ -30,14 +30,36 @@ exports.getActividadById = (req, res) => {
 
 // CREATE
 exports.createActividad = (req, res) => {
-    const { idActividad, actTitulo, actDescripcion, actFecha, prioridad, estado, idLista, idUsuario } = req.body;
-    const query = 'INSERT INTO actividad (idActividad, actTitulo, actDescripcion, actFecha, prioridad, estado, idLista, idUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(query, [idActividad, actTitulo, actDescripcion, actFecha, prioridad, estado, idLista, idUsuario], (err, result) => {
+    const { actTitulo, actDescripcion, actFecha, prioridad, estado, idLista, idUsuario } = req.body;
+
+    const queryLastId = 'SELECT idActividad FROM actividad ORDER BY idActividad DESC LIMIT 1';
+
+    db.query(queryLastId, (err, results) => {
         if (err) {
-            console.error('Error al insertar actividad:', err);
-            return res.status(500).json({ message: 'Error al insertar actividad' });
+            console.error('Error al obtener el último idActividad:', err);
+            return res.status(500).json({ message: 'Error al generar el ID de la actividad' });
         }
-        res.status(201).json({ message: 'Actividad creada correctamente', id: result.insertId });
+
+        let newIdActividad;
+
+        if (results.length === 0) {
+            newIdActividad = 'A000000001';
+        } else {
+            const lastId = results[0].idActividad;
+            const numericPart = parseInt(lastId.substring(1));
+            const nextNumericPart = numericPart + 1;
+            newIdActividad = `A${nextNumericPart.toString().padStart(9, '0')}`; 
+        }
+
+        const queryInsert = 'INSERT INTO actividad (idActividad, actTitulo, actDescripcion, actFecha, prioridad, estado, idLista, idUsuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        db.query(queryInsert, [newIdActividad, actTitulo, actDescripcion, actFecha, prioridad, estado, idLista, idUsuario], (err, result) => {
+            if (err) {
+                console.error('Error al insertar actividad:', err);
+                return res.status(500).json({ message: 'Error al insertar actividad' });
+            }
+
+            res.status(201).json({ message: 'Actividad creada correctamente', id: newIdActividad });
+        });
     });
 };
 
@@ -55,6 +77,32 @@ exports.updateActividad = (req, res) => {
             return res.status(404).json({ message: 'Actividad no encontrada' });
         }
         res.json({ message: 'Actividad actualizada correctamente' });
+    });
+};
+
+// UPDATE STATUS
+exports.updateEstadoActividad = (req, res) => {
+    const { id } = req.params; // Obtén el idActividad de los parámetros
+    const { estado } = req.body; // Obtén el nuevo estado del cuerpo de la solicitud
+
+    // Verifica que el estado se envíe en la solicitud
+    if (estado === undefined) {
+        return res.status(400).json({ message: 'El campo "estado" es obligatorio' });
+    }
+
+    const query = 'UPDATE actividad SET estado = ? WHERE idActividad = ?';
+
+    db.query(query, [estado, id], (err, result) => {
+        if (err) {
+            console.error('Error al actualizar el estado de la actividad:', err);
+            return res.status(500).json({ message: 'Error al actualizar el estado' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Actividad no encontrada' });
+        }
+
+        res.json({ message: 'Estado de la actividad actualizado correctamente' });
     });
 };
 

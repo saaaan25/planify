@@ -32,7 +32,6 @@ exports.getTableroById = (req, res) => {
 exports.createTablero = (req, res) => {
     const { tabTitulo, tabFechaCreacion, tabColor, idEspacio } = req.body;
 
-    // Consulta para obtener el último ID de tablero
     const getLastIdQuery = "SELECT idTablero FROM tablero ORDER BY idTablero DESC LIMIT 1";
 
     db.query(getLastIdQuery, (err, result) => {
@@ -41,16 +40,14 @@ exports.createTablero = (req, res) => {
             return res.status(500).json({ message: "Error al generar el identificador de tablero" });
         }
 
-        // Generar el nuevo ID
-        let newIdTablero = "T000000001"; // ID inicial por defecto
+        let newIdTablero = "T000000001"; 
         if (result.length > 0) {
-            const lastId = result[0].idTablero; // Último ID en la base de datos
-            const numericPart = parseInt(lastId.slice(1)); // Parte numérica del ID
-            const nextNumericPart = (numericPart + 1).toString().padStart(9, "0"); // Incrementar y rellenar con ceros
+            const lastId = result[0].idTablero; 
+            const numericPart = parseInt(lastId.slice(1));
+            const nextNumericPart = (numericPart + 1).toString().padStart(9, "0"); 
             newIdTablero = `T${nextNumericPart}`;
         }
 
-        // Consulta para insertar el nuevo tablero
         const insertQuery =
             "INSERT INTO tablero (idTablero, tabTitulo, tabFechaCreacion, tabColor, idEspacio) VALUES (?, ?, ?, ?, ?)";
 
@@ -68,9 +65,9 @@ exports.createTablero = (req, res) => {
 // UPDATE
 exports.updateTablero = (req, res) => {
     const { id } = req.params;
-    const { tabTitulo, tabFechaCreacion, tabColor, idEspacio } = req.body;
-    const query = 'UPDATE tablero SET tabTitulo = ?, tabFechaCreacion = ?, tabColor = ?, idEspacio = ? WHERE idTablero = ?';
-    db.query(query, [tabTitulo, tabFechaCreacion, tabColor, idEspacio, id], (err, result) => {
+    const { tabTitulo, tabColor, idEspacio } = req.body;
+    const query = 'UPDATE tablero SET tabTitulo = ?, tabColor = ?, idEspacio = ? WHERE idTablero = ?';
+    db.query(query, [tabTitulo, tabColor, idEspacio, id], (err, result) => {
         if (err) {
             console.error('Error al actualizar tablero:', err);
             return res.status(500).json({ message: 'Error al actualizar tablero' });

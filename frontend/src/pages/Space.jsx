@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import { useContext } from "react";
@@ -36,7 +36,7 @@ const Space = () => {
                     <div className='flex justify-start font-frankfurter text-3xl pl-2 text-black_1'>
                         Tableros
                     </div>
-                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4'>
+                    <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
                         {tableros.map((tablero) => (
                             <Board
                             key={tablero.idTablero}
@@ -48,8 +48,7 @@ const Space = () => {
                     </div>
                     
                 </div>
-            </div>
-            
+            </div>            
         </div>
     );
 }

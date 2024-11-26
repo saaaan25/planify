@@ -1,15 +1,16 @@
-import { MdFolder } from "react-icons/md";
 import PopoverTemplate from "./Popover";
 import { FiEye } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import UpdateBoardButton from "./UpdateBoardButton";
 import DeleteBoardButton from "./DeleteBoardButton";
+import ProgressBar from "./ProgressBar";
 
 const Board = ({ tablero, onUpdate, onDelete }) => {
     const navigate = useNavigate();
+    const progress = 30;
 
     const gotoBoard = () => {
-        navigate(`/${tablero.idTablero}`);
+        navigate(`/${tablero.idEspacio}/${tablero.idTablero}`);
     };
 
     const popover_content = (
@@ -28,12 +29,14 @@ const Board = ({ tablero, onUpdate, onDelete }) => {
 
     const popover_trigger = (
         <button className="text-black_1 px-4 py-2 rounded-md">
-            <div className="flex flex-col items-center justify-center border border-black_1 w-[250px] min-w-[250px]">
-                <div className="w-full">
+            <div className="flex flex-col items-center justify-center border border-black_1 w-[300px] min-w-[300px]">
+                <div className="w-full border-b border-black_1">
                     <h3 className="text-2xl font-frankfurter py-2 px-4" 
                         style={{backgroundColor: tablero.tabColor}}>{tablero.tabTitulo}</h3>
                 </div>
-                <h3 className="font-bold text-sm">{tablero.tabTitulo}</h3>
+                <div>
+                    <ProgressBar color={tablero.tabColor} progress={progress}/>
+                </div>
             </div>
         </button>
     );

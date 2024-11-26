@@ -30,23 +30,41 @@ exports.getListaById = (req, res) => {
 
 // CREATE
 exports.createLista = (req, res) => {
-    const { idLista, lisTitulo, lisColor, lisFechaCreacion, idTablero } = req.body;
-    const query = 'INSERT INTO lista (idLista, lisTitulo, lisColor, lisFechaCreacion, idTablero) VALUES (?, ?, ?, ?, ?)';
-    db.query(query, [idLista, lisTitulo, lisColor, lisFechaCreacion, idTablero], (err, result) => {
+    const { lisTitulo, lisColor, lisFechaCreacion, idTablero } = req.body;
+
+    const getLastIdQuery = 'SELECT idLista FROM lista ORDER BY idLista DESC LIMIT 1';
+
+    db.query(getLastIdQuery, (err, results) => {
         if (err) {
-            console.error('Error al insertar lista:', err);
-            return res.status(500).json({ message: 'Error al insertar lista' });
+            console.error('Error al obtener el último ID:', err);
+            return res.status(500).json({ message: 'Error al crear la lista' });
         }
-        res.status(201).json({ message: 'Lista creada correctamente', id: result.insertId });
+
+        let newId = 'L000000001';
+        if (results.length > 0) {
+            const lastId = results[0].idLista; 
+            const numericPart = parseInt(lastId.substring(1)); 
+            const incrementedId = numericPart + 1; 
+            newId = `L${incrementedId.toString().padStart(9, '0')}`;
+        }
+
+        const insertQuery = 'INSERT INTO lista (idLista, lisTitulo, lisColor, lisFechaCreacion, idTablero) VALUES (?, ?, ?, ?, ?)';
+        db.query(insertQuery, [newId, lisTitulo, lisColor, lisFechaCreacion, idTablero], (err, result) => {
+            if (err) {
+                console.error('Error al insertar lista:', err);
+                return res.status(500).json({ message: 'Error al insertar lista' });
+            }
+            res.status(201).json({ message: 'Lista creada correctamente', id: newId });
+        });
     });
 };
 
 // UPDATE
 exports.updateLista = (req, res) => {
     const { id } = req.params;
-    const { lisTitulo, lisColor, lisFechaCreacion, idTablero } = req.body;
-    const query = 'UPDATE lista SET lisTitulo = ?, lisColor = ?, lisFechaCreacion = ?, idTablero = ? WHERE idLista = ?';
-    db.query(query, [lisTitulo, lisColor, lisFechaCreacion, idTablero, id], (err, result) => {
+    const { lisTitulo, lisColor, idTablero } = req.body;
+    const query = 'UPDATE lista SET lisTitulo = ?, lisColor = ?, idTablero = ? WHERE idLista = ?';
+    db.query(query, [lisTitulo, lisColor, idTablero, id], (err, result) => {
         if (err) {
             console.error('Error al actualizar lista:', err);
             return res.status(500).json({ message: 'Error al actualizar lista' });

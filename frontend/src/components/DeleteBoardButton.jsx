@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiTrash } from 'react-icons/fi';
+import { MdClose } from 'react-icons/md';
 
 const DeleteBoardButton = ({ tablero, onDelete }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,18 +30,23 @@ const DeleteBoardButton = ({ tablero, onDelete }) => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-[450px]">
-                        <h2 className="text-xl font-bold mb-4">Eliminar Tablero</h2>
+                    <div className="bg-grey_1 p-6 rounded-lg shadow-lg w-[450px] min-w-[450px]">
+                        <div className="w-full flex justify-between text-black_1 items-start">
+                            <h1 className="text-2xl font-frankfurter mb-4">Eliminar espacio</h1>
+                            <button onClick={() => setIsModalOpen(false)}>
+                                <MdClose size={20}/>
+                            </button>
+                        </div>
                         <p>¿Estás seguro de que deseas eliminar este tablero?</p>
-                        <div className="mt-4 flex justify-end">
+                        <div className="flex gap-x-3 justify-center mb-2">
                             <button
-                                className="bg-red-500 text-white px-4 py-2 rounded-md"
+                                className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
                                 onClick={handleDelete}
                             >
-                                Sí, eliminar
+                                Aceptar
                             </button>
                             <button
-                                className="bg-gray-400 text-white px-4 py-2 rounded-md ml-2"
+                                className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
                                 onClick={() => setIsModalOpen(false)}
                             >
                                 Cancelar

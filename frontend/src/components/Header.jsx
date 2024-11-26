@@ -7,7 +7,7 @@ const Header = () => {
     console.log(user)
     
     return (
-        <div className="w-full h-[50px] bg-purple_2 flex items-center justify-end px-5">
+        <div className="w-full min-h-[50px] h-[50px] bg-purple_2 flex items-center justify-end px-5">
             
             <button onClick={logout} className="w-[35px] h-[35px] rounded-full">
                 <img src={user.imagenUrl} className="w-[35px] h-[35px] rounded-full">

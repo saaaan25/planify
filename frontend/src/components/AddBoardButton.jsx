@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdAddCircle } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
 
@@ -55,7 +55,7 @@ const AddBoardButton = ({ idEspacio, onCreate }) => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-                    <div className="bg-grey_1 px-10 py-6 rounded-lg shadow-lg w-[450px]">
+                    <div className="bg-grey_1 px-10 py-6 rounded-lg shadow-lg w-[450px] min-w-[450px]">
                         <div className="w-full flex justify-between text-black_1 items-start">
                             <h1 className="text-2xl font-frankfurter mb-4">Agregar Tablero</h1>
                             <button onClick={() => setIsModalOpen(false)}>

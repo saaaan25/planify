@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Space from '../components/Space';
 import { useContext } from "react";
@@ -44,8 +44,7 @@ const Home = () => {
                         ))}
                     </div>
                 </div>
-            </div>
-            
+            </div>        
         </div>
     );
 }

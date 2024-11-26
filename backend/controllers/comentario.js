@@ -30,23 +30,41 @@ exports.getComentarioById = (req, res) => {
 
 // CREATE
 exports.createComentario = (req, res) => {
-    const { idComentario, comDescripcion, idUsuario } = req.body;
-    const query = 'INSERT INTO comentario (idComentario, comDescripcion, idUsuario) VALUES (?, ?, ?)';
-    db.query(query, [idComentario, comDescripcion, idUsuario], (err, result) => {
+    const { comDescripcion, idUsuario, idLista } = req.body;
+
+    const query = 'SELECT idComentario FROM comentario ORDER BY idComentario DESC LIMIT 1';
+
+    db.query(query, (err, results) => {
         if (err) {
-            console.error('Error al insertar comentario:', err);
-            return res.status(500).json({ message: 'Error al insertar comentario' });
+            console.error('Error al obtener el último comentario:', err);
+            return res.status(500).json({ message: 'Error al obtener el último comentario' });
         }
-        res.status(201).json({ message: 'Comentario creado correctamente', id: result.insertId });
+
+        let newIdComentario = 'C000000001';
+        if (results.length > 0) {
+            const lastId = results[0].idComentario;
+            const lastNumber = parseInt(lastId.slice(1), 10);
+            const newNumber = lastNumber + 1;
+            newIdComentario = `C${newNumber.toString().padStart(9, '0')}`;
+        }
+
+        const insertQuery = 'INSERT INTO comentario (idComentario, comDescripcion, idUsuario, idLista) VALUES (?, ?, ?, ?)';
+        db.query(insertQuery, [newIdComentario, comDescripcion, idUsuario, idLista], (err, result) => {
+            if (err) {
+                console.error('Error al insertar comentario:', err);
+                return res.status(500).json({ message: 'Error al insertar comentario' });
+            }
+            res.status(201).json({ message: 'Comentario creado correctamente', id: result.insertId });
+        });
     });
 };
 
 // UPDATE
 exports.updateComentario = (req, res) => {
     const { id } = req.params;
-    const { comDescripcion, idUsuario } = req.body;
-    const query = 'UPDATE comentario SET comDescripcion = ?, idUsuario = ? WHERE idComentario = ?';
-    db.query(query, [comDescripcion, idUsuario, id], (err, result) => {
+    const { comDescripcion, idUsuario, idLista } = req.body;
+    const query = 'UPDATE comentario SET comDescripcion = ?, idUsuario = ?, idLista = ? WHERE idComentario = ?';
+    db.query(query, [comDescripcion, idUsuario, idLista, id], (err, result) => {
         if (err) {
             console.error('Error al actualizar comentario:', err);
             return res.status(500).json({ message: 'Error al actualizar comentario' });

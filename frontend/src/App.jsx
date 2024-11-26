@@ -1,6 +1,5 @@
 import './App.css'
 import Home from './pages/Home'
-import Profile from './pages/Profile'
 import Space from './pages/Space'
 import Board from './pages/Board'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -21,7 +20,6 @@ function App() {
 
                     {/* Rutas privadas */}
                     <Route path="/" element={<PrivateRoute element={Home} />} />
-                    <Route path="/profile" element={<PrivateRoute element={Profile} />} />
                     <Route path="/:idEspacio" element={<PrivateRoute element={Space} />} />
                     <Route path="/:idEspacio/:idTablero" element={<PrivateRoute element={Board} />} />
                 </Routes>
