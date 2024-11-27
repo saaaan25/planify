@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import { useContext } from "react";
@@ -6,25 +6,22 @@ import { AuthContext } from "../context/AuthContext";
 import Sidebar from '../components/Siderbar';
 import List from '../components/List';
 import AddListButton from '../components/AddListButton';
+import CommentsDetailsModal from '../components/CommentsDetailsModal';
+import { MdComment } from 'react-icons/md';
+import useFetchListas from '../hooks/getListas';
+import useFetchComentarios from '../hooks/getComentarios';
+import EstadisticasTableroModal from '../components/BoardStatsModal';
 
 const Board = () => {
-    const [listas, setListas] = useState([]);
-    const { user } = useContext(AuthContext);
-    console.log(listas)
     const idTablero = useParams();
-    console.log(idTablero.idTablero)
+    const { listas, fetchListas } = useFetchListas(idTablero.idTablero)
+    const { comentarios, fetchComentarios } = useFetchComentarios(idTablero.idTablero)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { user } = useContext(AuthContext);
+    const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
 
-    const fetchListas = async () => {
-        const res = await fetch(`http://localhost:5000/api/listas`);
-        const data = await res.json();
-        setListas(data.filter((lista) => lista.idTablero === idTablero.idTablero));
-    };
-    console.log(listas, idTablero.idTablero)
-
-    useEffect(() => {
-        fetchListas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.idUsuario, idTablero.idTablero]);
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     return (
         <div className='flex flex-col w-[100vw] h-[100vh] items-start justify-start'>
@@ -32,6 +29,16 @@ const Board = () => {
             <div className='flex w-full h-full'>
                 <Sidebar>
                     <AddListButton idTablero={idTablero.idTablero} onCreate={fetchListas}/>
+                    <button
+                        className="bg-purple_1 text-black_1 px-4 py-2 rounded-md flex items-center gap-x-2 hover:bg-purple_2"
+                        onClick={openModal} 
+                    >
+                        <MdComment size={20}/>
+                        <p className="text-sm">Comentarios</p>
+                    </button>
+                    <button onClick={() => setIsStatsModalOpen(true)}>
+                        Estadísticas
+                    </button>
                 </Sidebar>
                 <div className='p-10'>
                     <div className='flex justify-start font-frankfurter text-3xl pl-2 text-black_1'>
@@ -49,7 +56,20 @@ const Board = () => {
                     </div>
                 </div>
             </div>
-            
+            <CommentsDetailsModal 
+                isOpen={isModalOpen} 
+                closeModal={closeModal} 
+                comentarios={comentarios} 
+                fetchComentarios={fetchComentarios}
+                idTablero={idTablero.idTablero}
+                idUsuario={user.idUsuario}
+            />
+            <EstadisticasTableroModal
+                        id={idTablero.idTablero} 
+                        context="tablero"
+                        isOpen={isStatsModalOpen} 
+                        closeModal={() => setIsStatsModalOpen(false)} 
+                    />
         </div>
     );
 }

@@ -30,7 +30,7 @@ exports.getComentarioById = (req, res) => {
 
 // CREATE
 exports.createComentario = (req, res) => {
-    const { comDescripcion, idUsuario, idLista } = req.body;
+    const { comDescripcion, idUsuario, idTablero } = req.body;
 
     const query = 'SELECT idComentario FROM comentario ORDER BY idComentario DESC LIMIT 1';
 
@@ -48,8 +48,8 @@ exports.createComentario = (req, res) => {
             newIdComentario = `C${newNumber.toString().padStart(9, '0')}`;
         }
 
-        const insertQuery = 'INSERT INTO comentario (idComentario, comDescripcion, idUsuario, idLista) VALUES (?, ?, ?, ?)';
-        db.query(insertQuery, [newIdComentario, comDescripcion, idUsuario, idLista], (err, result) => {
+        const insertQuery = 'INSERT INTO comentario (idComentario, comDescripcion, idUsuario, idTablero) VALUES (?, ?, ?, ?)';
+        db.query(insertQuery, [newIdComentario, comDescripcion, idUsuario, idTablero], (err, result) => {
             if (err) {
                 console.error('Error al insertar comentario:', err);
                 return res.status(500).json({ message: 'Error al insertar comentario' });
@@ -62,9 +62,9 @@ exports.createComentario = (req, res) => {
 // UPDATE
 exports.updateComentario = (req, res) => {
     const { id } = req.params;
-    const { comDescripcion, idUsuario, idLista } = req.body;
-    const query = 'UPDATE comentario SET comDescripcion = ?, idUsuario = ?, idLista = ? WHERE idComentario = ?';
-    db.query(query, [comDescripcion, idUsuario, idLista, id], (err, result) => {
+    const { comDescripcion, idUsuario, idTablero } = req.body;
+    const query = 'UPDATE comentario SET comDescripcion = ?, idUsuario = ?, idTablero = ? WHERE idComentario = ?';
+    db.query(query, [comDescripcion, idUsuario, idTablero, id], (err, result) => {
         if (err) {
             console.error('Error al actualizar comentario:', err);
             return res.status(500).json({ message: 'Error al actualizar comentario' });

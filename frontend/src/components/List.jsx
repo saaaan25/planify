@@ -1,52 +1,13 @@
 import ProgressBar from "./ProgressBar";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
 import Activity from "./Activity";
-import { MdAddCircle } from 'react-icons/md';
 import AddActivityButton from "./AddActivityButton";
 import ListOptions from "./ListOptions";
+import useFetchActividades from "../hooks/getActividades";
+import useProgress from "../hooks/getProgress";
 
 const List = ({ lista, onUpdate, onDelete }) => {
-    const [actividades, setActividades] = useState([]);
-    const [progress, setProgress] = useState(0)
-    const { user } = useContext(AuthContext);
-
-    const fetchActividades = async () => {
-        const res = await fetch(`http://localhost:5000/api/actividades`);
-        const data = await res.json();
-    
-        const filteredAndSortedActivities = data
-            .filter((actividad) => actividad.idLista === lista.idLista)
-            .sort((a, b) => {
-                if (a.estado !== b.estado) return a.estado - b.estado;
-    
-                const dateA = new Date(a.actFecha);
-                const dateB = new Date(b.actFecha);
-                if (dateA - dateB !== 0) return dateA - dateB;
-    
-                const prioridadOrden = { Alta: 1, Media: 2, Baja: 3 };
-                return prioridadOrden[a.prioridad] - prioridadOrden[b.prioridad];
-            });
-
-        const doneActivitiesCount = filteredAndSortedActivities.filter(
-            (actividad) => actividad.estado === 1
-        ).length;
-    
-        const totalActivitiesCount = filteredAndSortedActivities.length;
-        const calculatedProgress =
-            totalActivitiesCount > 0
-                ? (doneActivitiesCount / totalActivitiesCount) * 100
-                : 0;
-    
-        setActividades(filteredAndSortedActivities);
-        setProgress(calculatedProgress);
-    };    
-
-    useEffect(() => {
-        fetchActividades();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.idUsuario]);
-    console.log(actividades);
+    const { actividades, fetchActividades } = useFetchActividades(lista.idLista);
+    const progress = useProgress(actividades);
 
     return (
         <div className="text-black_1 px-4 py-2 rounded-md">

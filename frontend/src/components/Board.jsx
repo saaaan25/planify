@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import UpdateBoardButton from "./UpdateBoardButton";
 import DeleteBoardButton from "./DeleteBoardButton";
 import ProgressBar from "./ProgressBar";
+import useEstadisticasTablero from "../hooks/getEstadisticasTablero";
+import useProgress from "../hooks/getProgress";
 
 const Board = ({ tablero, onUpdate, onDelete }) => {
     const navigate = useNavigate();
-    const progress = 30;
+    const { actividades }= useEstadisticasTablero(tablero.idTablero)
+    const progress = useProgress(actividades)
 
     const gotoBoard = () => {
         navigate(`/${tablero.idEspacio}/${tablero.idTablero}`);

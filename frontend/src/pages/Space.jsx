@@ -1,29 +1,15 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import Sidebar from '../components/Siderbar';
 import Board from '../components/Board';
 import AddBoardButton from '../components/AddBoardButton';
+import useFetchTableros from '../hooks/getTableros';
+import Search from '../components/Search';
 
 const Space = () => {
-    const [tableros, setTableros] = useState([]);
-    const { user } = useContext(AuthContext);
     const idEspacio = useParams();
     console.log(idEspacio.idEspacio)
-
-    const fetchTableros = async () => {
-        const res = await fetch(`http://localhost:5000/api/tableros`);
-        const data = await res.json();
-        setTableros(data.filter((tablero) => tablero.idEspacio === idEspacio.idEspacio));
-    };
-    console.log(tableros)
-
-    useEffect(() => {
-        fetchTableros();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user.idUsuario]);
+    const {tableros, fetchTableros} = useFetchTableros(idEspacio.idEspacio)
 
     return (
         <div className='flex flex-col w-[100vw] h-[100vh] items-start justify-start'>
@@ -33,10 +19,15 @@ const Space = () => {
                     <AddBoardButton idEspacio={idEspacio.idEspacio} onCreate={fetchTableros}/>
                 </Sidebar>
                 <div className='p-10'>
-                    <div className='flex justify-start font-frankfurter text-3xl pl-2 text-black_1'>
-                        Tableros
+                    <div className='h-[50px] w-full flex justify-between items-center'>
+                        <div className='flex justify-start font-frankfurter text-3xl pl-2 text-black_1'>
+                            Tableros
+                        </div>
+                        <div>
+                            <Search datos={tableros} propiedad="tabTitulo" placeholder="Buscar tablero"/>
+                        </div>
                     </div>
-                    <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4'>
+                    <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4'>
                         {tableros.map((tablero) => (
                             <Board
                             key={tablero.idTablero}
@@ -46,7 +37,6 @@ const Space = () => {
                             />
                         ))}
                     </div>
-                    
                 </div>
             </div>            
         </div>
