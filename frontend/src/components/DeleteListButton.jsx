@@ -37,22 +37,20 @@ const DeleteListButton = ({ lista, onDelete }) => {
                             <MdClose size={20} />
                         </button>
                     </div>
-                    <p className="text-black_1 mb-6">
+                    <p className="text-black_1">
                         ¿Estás seguro de que deseas eliminar esta lista? Esta acción no se puede deshacer.
                     </p>
-                    <div className="flex gap-x-3 justify-center">
+                    <div className="flex gap-x-3 justify-center mb-2">
                         <button
-                            type="button"
-                            className="bg-red-500 text-white px-4 py-2 rounded-sm mt-4"
+                            className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
                             onClick={handleDelete}
-                        >
+                            >
                             Aceptar
                         </button>
                         <button
-                            type="button"
-                            className="bg-gray-300 text-black px-4 py-2 rounded-sm mt-4"
+                            className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
                             onClick={() => setIsModalOpen(false)}
-                        >
+                            >
                             Cancelar
                         </button>
                     </div>

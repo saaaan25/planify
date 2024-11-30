@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
             setUser(storedUser);
         }
         setIsLoading(false);
+        
     }, []);
 
     const login = async (email, contrasena) => {
@@ -28,8 +29,7 @@ export const AuthProvider = ({ children }) => {
     
             const { token, user } = response.data;
     
-            // Verifica que 'user' contiene todos los atributos
-            console.log('Datos del usuario:', user); // Aquí se debe mostrar todo el objeto 'user'
+            console.log('Datos del usuario:', user); 
     
             localStorage.setItem("token", token);
             localStorage.setItem("user", JSON.stringify(user));
@@ -52,8 +52,13 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
+    const updateUser = (updatedUser) => {
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+    };
+
     return (
-        <AuthContext.Provider value={{ isAuthenticated, isLoading, user, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, user, login, logout, updateUser }}>
         {children}
         </AuthContext.Provider>
     );

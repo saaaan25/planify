@@ -7,24 +7,29 @@ import Sidebar from '../components/Siderbar';
 import List from '../components/List';
 import AddListButton from '../components/AddListButton';
 import CommentsDetailsModal from '../components/CommentsDetailsModal';
-import { MdComment } from 'react-icons/md';
+import { MdComment, MdQueryStats } from 'react-icons/md';
 import useFetchListas from '../hooks/getListas';
 import useFetchComentarios from '../hooks/getComentarios';
 import EstadisticasTableroModal from '../components/BoardStatsModal';
+import ElementsList from '../components/ElementsList';
+import useFetchTableros from '../hooks/getTableros';
 
 const Board = () => {
     const idTablero = useParams();
+    const idEspacio = useParams();
     const { listas, fetchListas } = useFetchListas(idTablero.idTablero)
     const { comentarios, fetchComentarios } = useFetchComentarios(idTablero.idTablero)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { user } = useContext(AuthContext);
     const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+    const { tableros } = useFetchTableros(idEspacio.idEspacio)
+    const tablerosFiltrados = tableros.filter(tablero => tablero.idTablero !== idTablero.idTablero);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
     return (
-        <div className='flex flex-col w-[100vw] h-[100vh] items-start justify-start'>
+        <div className='flex flex-col w-[100vw] h-[100vh] items-start justify-start bg-custom_image'>
             <Header/>
             <div className='flex w-full h-full'>
                 <Sidebar>
@@ -36,9 +41,12 @@ const Board = () => {
                         <MdComment size={20}/>
                         <p className="text-sm">Comentarios</p>
                     </button>
-                    <button onClick={() => setIsStatsModalOpen(true)}>
+                    <button onClick={() => setIsStatsModalOpen(true)}
+                        className="bg-purple_1 text-sm text-black_1 px-4 py-2 rounded-md flex items-center gap-x-2 hover:bg-purple_2">
+                        <MdQueryStats size={20}/>
                         Estadísticas
                     </button>
+                    <ElementsList title="Otros tableros" list={tablerosFiltrados} />
                 </Sidebar>
                 <div className='p-10'>
                     <div className='flex justify-start font-frankfurter text-3xl pl-2 text-black_1'>

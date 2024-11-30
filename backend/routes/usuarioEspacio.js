@@ -13,4 +13,8 @@ router.delete('/:idUsuario/:idEspacio', usuarioEspacioController.deleteUsuarioEs
 
 router.delete('/user/:idUsuario', usuarioEspacioController.deleteUsuarioEspaciosByUser);
 
+router.get('/:idEspacio', usuarioEspacioController.getUsuariosPorEspacio);
+
+router.get('/:idUsuario', usuarioEspacioController.getEspaciosPorUsuario);
+
 module.exports = router;

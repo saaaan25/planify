@@ -4,7 +4,6 @@ import DeleteListButton from "./DeleteListButton";
 import { MdMoreVert } from "react-icons/md";
 
 const ListOptions = ({ lista, onUpdate, onDelete }) => {
-    const progress = 30;
 
     const popover_content = (
         <div className="flex flex-col">
@@ -15,7 +14,7 @@ const ListOptions = ({ lista, onUpdate, onDelete }) => {
 
     const popover_trigger = (
         <div className="flex h-full items-center justify-center">
-            <button className="flex items-center justify-center text-black_1 rounded-full hover:bg-gray-400">
+            <button className="flex items-center justify-center text-black_1 rounded-full hover:bg-black hover:bg-opacity-10">
                 <MdMoreVert size={25}/>
             </button> 
         </div>

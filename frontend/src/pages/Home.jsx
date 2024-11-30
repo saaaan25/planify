@@ -7,13 +7,16 @@ import AddSpaceButton from '../components/AddSpaceButton';
 import useFetchEspacios from '../hooks/getEspacios';
 import Search from '../components/Search';
 import SortOptions from '../components/SortOptions';
+import useEspaciosPorUsuario from '../hooks/getSpacesByUser';
 
 const Home = () => {
     const { user } = useContext(AuthContext);
     const { espacios, fetchEspacios } = useFetchEspacios(user.idUsuario);
-    const [espaciosFiltrados, setEspaciosFiltrados] = useState(espacios);
+    const [espaciosUnicos, setEspaciosUnicos] = useState(espacios);
+    const { espaciosFiltrados } = useEspaciosPorUsuario(user.idUsuario);
+    console.log(espaciosFiltrados)
     useEffect(() => {
-        setEspaciosFiltrados(espacios);
+        setEspaciosUnicos(espacios);
     }, [espacios]);
 
     return (
@@ -34,10 +37,10 @@ const Home = () => {
                     </div>
                     <div className='flex my-2 mx-3 gap-x-2 items-center'>
                         <p className='text-sm'>Ordenar por</p>
-                        <SortOptions lista={espacios} setEspaciosFiltrados={setEspaciosFiltrados} tipo="espacio" />
+                        <SortOptions lista={espacios} setFiltrados={setEspaciosUnicos} tipo="espacio" />
                     </div>
                     <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3'>
-                        {espaciosFiltrados.map((espacio) => (
+                        {espaciosUnicos.map((espacio) => (
                             <Space
                             key={espacio.idEspacio}
                             espacio={espacio}

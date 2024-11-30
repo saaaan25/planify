@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const SortOptions = ({ lista, setEspaciosFiltrados, tipo }) => {
+const SortOptions = ({ lista, setFiltrados, tipo }) => {
     const [opcionOrden, setOpcionOrden] = useState("antiguo");
 
     const aplicarOrden = () => {
@@ -39,7 +39,7 @@ const SortOptions = ({ lista, setEspaciosFiltrados, tipo }) => {
                 break;
         }
 
-        setEspaciosFiltrados(listaOrdenada);
+        setFiltrados(listaOrdenada);
     };
 
     useEffect(() => {
