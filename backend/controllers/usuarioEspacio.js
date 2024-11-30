@@ -62,32 +62,29 @@ exports.getUsuariosPorEspacio = (req, res) => {
 // GET SPACES BY USER
 exports.getEspaciosPorUsuario = (req, res) => {
     const { idUsuario } = req.params;  // Recuperamos el idUsuario de la URL
-    console.log(idUsuario)
+    console.log('Ruta correcta', req.params); // Verifica si el parámetro llega
+    console.log("ID del usuario:", idUsuario);
 
-    // Consulta SQL para obtener los espacios asociados al idUsuario
     const query = `
         SELECT idEspacio
         FROM usuario_espacio
         WHERE idUsuario = ?
     `;
 
-    // Ejecutamos la consulta SQL
     db.query(query, [idUsuario], (err, result) => {
         if (err) {
             console.error('Error al obtener los espacios del usuario:', err);
             return res.status(500).json({ message: 'Error al obtener los espacios del usuario' });
         }
 
-        // Si no se encuentran resultados, devolvemos un mensaje adecuado
         if (result.length === 0) {
             return res.status(404).json({ message: 'No se encontraron espacios para el usuario' });
         }
 
-        // Devolvemos los resultados (idEspacio) como respuesta
         res.status(200).json(result);
-        console.log(result)
     });
 };
+
 
 // DELETE (relación específica)
 exports.deleteUsuarioEspacio = (req, res) => {

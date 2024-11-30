@@ -16,8 +16,8 @@ const Home = () => {
     const { espaciosFiltrados } = useEspaciosPorUsuario(user.idUsuario);
     console.log(espaciosFiltrados)
     useEffect(() => {
-        setEspaciosUnicos(espacios);
-    }, [espacios]);
+        setEspaciosUnicos(espaciosFiltrados);
+    }, [espaciosFiltrados]);
 
     return (
         <div className='flex flex-col w-[100vw] h-[100vh] items-start justify-start'>
