@@ -13,7 +13,7 @@ const useEspaciosPorUsuario = (idUsuario) => {
             setLoading(true);
             try {
                 // Hacemos la llamada para obtener los idEspacio para un usuario específico
-                const response = await fetch(`http://localhost:5000/api/usuario_espacio/${idUsuario}`);
+                const response = await fetch(`http://localhost:5000/api/usuario_espacio/usuario/${idUsuario}`);
                 const relaciones = await response.json();
                 console.log("Estas son las coincidencias de idEspacio:", relaciones);
 

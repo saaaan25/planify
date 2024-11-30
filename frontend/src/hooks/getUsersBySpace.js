@@ -12,7 +12,7 @@ const useUsuariosPorEspacio = (idEspacio) => {
         const fetchRelaciones = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/usuario_espacio/${idEspacio}`);
+                const response = await fetch(`http://localhost:5000/api/usuario_espacio/espacio/${idEspacio}`);
                 const relaciones = await response.json();
                 console.log("Estas son las coincidencias de idUsuario:", relaciones);
 
