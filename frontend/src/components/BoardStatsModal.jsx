@@ -39,7 +39,7 @@ const EstadisticasTableroModal = ({ id, context, isOpen, closeModal }) => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-purple-100 p-2 rounded-md mb-2">
+                <div className="p-2 rounded-md mb-2">
                     <h3 className="text-black_1 text-center font-semibold bg-purple_1 py-1">Avance</h3>
                     <div className="grid justify-between mt-3 grid-cols-[3fr_2fr] gap-x-4">
                         <div className="flex flex-col gap-y-3">
