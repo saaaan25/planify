@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { MdAddCircle } from 'react-icons/md';
 import { MdClose } from 'react-icons/md';
 
 const AddCommentButton = ({ onCreate, idTablero, idUsuario }) => {
@@ -35,11 +34,10 @@ const AddCommentButton = ({ onCreate, idTablero, idUsuario }) => {
     return (
         <div>
             <button
-                className="bg-purple_1 text-black_1 px-4 py-2 rounded-md flex items-center gap-x-2 hover:bg-purple_2"
+                className="bg-purple_1 text-black_1 px-4 py-2 rounded-sm border border-black_1 flex items-center gap-x-2"
                 onClick={() => setIsModalOpen(true)} 
             >
-                <MdAddCircle size={20}/>
-                <p className="text-sm">Agregar Comentario</p>
+                <p className="text-sm">Agregar comentario</p>
             </button>
 
             {isModalOpen && (
@@ -51,7 +49,6 @@ const AddCommentButton = ({ onCreate, idTablero, idUsuario }) => {
                                 <MdClose size={20}/>
                             </button>
                         </div>
-                        
                         <form>
                             <label className="block mb-4">
                                 <p className="flex justify-start">Descripción</p>

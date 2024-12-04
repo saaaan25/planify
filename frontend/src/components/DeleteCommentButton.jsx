@@ -15,7 +15,7 @@ const DeleteCommentButton = ({ comentario, onDelete }) => {
                 throw new Error("Error al eliminar comentario");
             }
 
-            onDelete(); // Llama a la función para actualizar la lista de comentarios
+            onDelete(); 
             setIsModalOpen(false);
         } catch (error) {
             console.error("Error al eliminar comentario:", error);
@@ -26,8 +26,9 @@ const DeleteCommentButton = ({ comentario, onDelete }) => {
     return (
         <div>
             <button
-                className="flex text-black_1 px-3 py-2 justify-start items-center gap-x-2"
-                onClick={() => setIsModalOpen(true)} // Abre el modal para confirmar la eliminación
+                className="flex rounded-full hover:bg-black_1 px-3 py-2 justify-start items-center gap-x-2 
+                    hover:text-grey_1 w-[40px] h-[40px] text-black_1"
+                onClick={() => setIsModalOpen(true)} 
             >
                 <FiTrash />
             </button>
@@ -45,13 +46,13 @@ const DeleteCommentButton = ({ comentario, onDelete }) => {
                         <div className="flex gap-x-3 justify-center mb-2">
                             <button
                                 className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
-                                onClick={handleDelete} // Ejecuta la eliminación
+                                onClick={handleDelete} 
                             >
                                 Aceptar
                             </button>
                             <button
                                 className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
-                                onClick={() => setIsModalOpen(false)} // Cierra el modal sin eliminar
+                                onClick={() => setIsModalOpen(false)} 
                             >
                                 Cancelar
                             </button>

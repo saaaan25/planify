@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
-import useFetchUsuarios from '../hooks/getUsuarios'; // Asegúrate de importar el hook
+import useFetchUsuarios from '../hooks/getUsuarios';
+import { MdClose, MdSearch } from 'react-icons/md';
 
-// Modal para agregar la relación usuario-espacio
 const AddUserSpaceModal = ({ isOpen, closeModal, idEspacio }) => {
     const [nombreUsuario, setNombreUsuario] = useState('');
     const [idUsuario, setIdUsuario] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     
-    // Usamos el hook para obtener los usuarios
     const { usuarios, fetchUsuarios } = useFetchUsuarios();
 
-    // Fetch usuarios cuando el modal se abre
     useEffect(() => {
         if (isOpen) {
-            fetchUsuarios(); // Obtenemos la lista de usuarios cuando el modal se abre
+            fetchUsuarios(); 
         }
     }, [isOpen, fetchUsuarios]);
 
@@ -24,15 +22,14 @@ const AddUserSpaceModal = ({ isOpen, closeModal, idEspacio }) => {
             return;
         }
 
-        // Buscar al usuario en la lista de usuarios
         const user = usuarios.find(user => user.nombreUsuario.toLowerCase() === nombreUsuario.toLowerCase());
 
         if (user) {
-            setIdUsuario(user.idUsuario); // Si encontramos el usuario, guardamos su ID
+            setIdUsuario(user.idUsuario); 
             setErrorMessage('');
         } else {
             setErrorMessage('Usuario no encontrado.');
-            setIdUsuario(null); // Si no se encuentra, aseguramos que el ID sea null
+            setIdUsuario(null);
         }
     };
 
@@ -45,7 +42,6 @@ const AddUserSpaceModal = ({ isOpen, closeModal, idEspacio }) => {
         }
 
         try {
-            // Hacer la solicitud al backend para crear la relación
             const response = await fetch('http://localhost:5000/api/usuario_espacio', {
                 method: 'POST',
                 headers: {
@@ -62,8 +58,8 @@ const AddUserSpaceModal = ({ isOpen, closeModal, idEspacio }) => {
             if (data.message) {
                 setSuccessMessage(data.message);
                 setErrorMessage('');
-                setNombreUsuario(''); // Limpiar el formulario
-                setIdUsuario(null); // Limpiar el ID del usuario
+                setNombreUsuario(''); 
+                setIdUsuario(null); 
             } else {
                 setErrorMessage('Error al agregar la relación.');
             }
@@ -74,48 +70,55 @@ const AddUserSpaceModal = ({ isOpen, closeModal, idEspacio }) => {
         }
     };
 
-    if (!isOpen) return null; // Si el modal no está abierto, no renderizarlo
+    if (!isOpen) return null; 
 
     return (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg w-96">
-                <h2 className="text-xl font-semibold mb-4 text-center">Agregar Usuario a Espacio</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700">Nombre del Usuario</label>
-                        <input
-                            type="text"
-                            value={nombreUsuario}
-                            onChange={(e) => setNombreUsuario(e.target.value)}
-                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="button"
-                        onClick={handleSearchUser}
-                        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 w-full mb-4"
-                    >
-                        Buscar Usuario
+            <div className="bg-grey_1 py-6 px-10 rounded-lg w-96">
+                <div className="w-full flex justify-between text-black_1 items-start">
+                    <h1 className="text-2xl font-frankfurter mb-4">Agregar miembro</h1>
+                    <button onClick={closeModal}>
+                        <MdClose size={20}/>
                     </button>
+                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="bloq mb-2">
+                        <label className="flex text-sm font-medium text-black_1 justify-start">Nombre del Usuario</label>
+                        <div className='flex items-center justify-center border border-black_1 my-2 bg-white py-2 pl-2'>
+                            <input
+                                type="text"
+                                value={nombreUsuario}
+                                onChange={(e) => setNombreUsuario(e.target.value)}
+                                className="w-[90%] focus:ring-0 focus:border-transparent focus:outline-none"
+                                required
+                            /> 
+                            <button
+                                type="button"
+                                onClick={handleSearchUser}
+                                className="text-black_1 rounded-md w-[10%] pr-2"
+                            >
+                                <MdSearch size={20}/>
+                            </button>
+                        </div>
+                    </div>  
                     {idUsuario && (
-                        <p className="text-green-500 text-sm mb-4">Usuario encontrado con ID: {idUsuario}</p>
+                        <p className="text-black_1 text-sm mb-2">Usuario encontrado con ID: {idUsuario}</p>
                     )}
-                    {errorMessage && <p className="text-red-500 text-sm mt-2">{errorMessage}</p>}
-                    {successMessage && <p className="text-green-500 text-sm mt-2">{successMessage}</p>}
-                    <div className="mt-4 flex justify-between">
+                    {errorMessage && <p className="text-black_1 text-sm mt-2">{errorMessage}</p>}
+                    {successMessage && <p className="text-black_1 text-sm mt-2">{successMessage}</p>}
+                    <div className="mt-1 flex justify-center gap-x-3">
                         <button
                             type="submit"
-                            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+                            className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
                         >
-                            Agregar
+                            Aceptar
                         </button>
                         <button
                             type="button"
                             onClick={closeModal}
-                            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                            className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
                         >
-                            Cerrar
+                            Cancelar
                         </button>
                     </div>
                 </form>
@@ -124,31 +127,26 @@ const AddUserSpaceModal = ({ isOpen, closeModal, idEspacio }) => {
     );
 };
 
-// Componente principal con el botón para abrir el modal
 const AddUserButton = ({ idEspacio }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Función para abrir el modal
     const openModal = () => {
         setIsModalOpen(true);
     };
 
-    // Función para cerrar el modal
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
     return (
         <div>
-            {/* Botón para abrir el modal */}
             <button
                 onClick={openModal}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                className="bg-grey_1 text-black_1 py-2 px-4 my-2 rounded-full hover:bg-black hover:bg-opacity-10"
             >
                 Agregar Usuario
             </button>
 
-            {/* Modal de agregar usuario al espacio */}
             <AddUserSpaceModal
                 isOpen={isModalOpen}
                 closeModal={closeModal}

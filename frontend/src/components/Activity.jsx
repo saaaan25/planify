@@ -73,7 +73,7 @@ const Activity = ({activity, onUpdate, onDelete}) => {
 
     const popover_trigger = (
         <button className="text-black_1 rounded-md">
-            <div className="w-[20px] min-w-[20px] h-[20px] hover:bg-slate-500 rounded-full flex items-center justify-center">
+            <div className="w-[20px] min-w-[20px] h-[20px] text-black_1 rounded-full hover:bg-black hover:bg-opacity-10 flex items-center justify-center">
                 <MdMoreVert/>
             </div>
         </button>

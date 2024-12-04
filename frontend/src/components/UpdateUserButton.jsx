@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
+import { MdClose } from "react-icons/md";
 
 const UpdateUserButton = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,9 +67,9 @@ const UpdateUserButton = () => {
         <div className="flex justify-center items-center bg-gray-100">
             <button
                 onClick={handleOpenModal}
-                className="flex text-black_1 px-3 py-2 justify-start items-center gap-x-2"
+                className="bg-purple_1 text-black_1 border border-black_1 px-4 py-1 rounded-sm mt-4 ml-2"
             >
-                Actualizar perfil
+                Editar perfil
             </button>
             <UpdateUserModal
                 isOpen={isModalOpen}
@@ -93,12 +94,15 @@ const UpdateUserModal = ({ isOpen, onClose, formData, handleChange, handleSubmit
                 className="bg-grey_1 p-6 rounded-lg shadow-xl w-[450px] min-w-[450px]"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div>
-                    <h2 className="font-frankfurter">Actualizar perfil</h2>
+                <div className="w-full flex justify-between text-black_1 items-start">
+                    <h1 className="text-2xl font-frankfurter mb-2">Editar perfil</h1>
+                    <button onClick={onClose}>
+                        <MdClose size={20}/>
+                    </button>
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+                <form onSubmit={handleSubmit} className="space-y-4 mt-2">
                     <div className="flex flex-col gap-y-3 text-xs">
-                        <label className="font-bold">Nombre</label>
+                        <label className="font-bold flex justify-start">Nombre</label>
                         <input
                             type="text"
                             name="nombre"
@@ -108,7 +112,7 @@ const UpdateUserModal = ({ isOpen, onClose, formData, handleChange, handleSubmit
                         />
                     </div>
                     <div className="flex flex-col gap-y-3 text-xs">
-                        <label className="font-bold">Apellido</label>
+                        <label className="font-bold flex justify-start">Apellido</label>
                         <input
                             type="text"
                             name="apellido"
@@ -118,7 +122,7 @@ const UpdateUserModal = ({ isOpen, onClose, formData, handleChange, handleSubmit
                         />
                     </div>
                     <div className="flex flex-col gap-y-3 text-xs">
-                        <label className="font-bold">Nombre de usuario</label>
+                        <label className="font-bold flex justify-start">Nombre de usuario</label>
                         <input
                             type="text"
                             name="nombreUsuario"
@@ -128,7 +132,7 @@ const UpdateUserModal = ({ isOpen, onClose, formData, handleChange, handleSubmit
                         />
                     </div>
                     <div className="flex flex-col gap-y-3 text-xs">
-                        <label className="font-bold">Correo electrónico</label>
+                        <label className="font-bold flex justify-start">Correo electrónico</label>
                         <input
                             type="email"
                             name="email"
@@ -138,7 +142,7 @@ const UpdateUserModal = ({ isOpen, onClose, formData, handleChange, handleSubmit
                         />
                     </div>
                     <div className="flex flex-col gap-y-3 text-xs">
-                        <label className="font-bold">Contraseña</label>
+                        <label className="font-bold flex justify-start">Contraseña</label>
                         <input
                             type="password"
                             name="contrasena"
@@ -147,12 +151,18 @@ const UpdateUserModal = ({ isOpen, onClose, formData, handleChange, handleSubmit
                             className="py-1 px-2 border border-black_1"
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full mt-4 py-2 bg-blue-500 text-white rounded"
-                    >
-                        Actualizar
-                    </button>
+                    <div className="flex gap-x-3 w-full justify-center">
+                        <button
+                            type="submit"
+                            className="px-4 py-1 rounded-sm mt-4 ml-2 bg-purple_1 text-black_1 border border-black_1"
+                        >
+                            Aceptar
+                        </button>
+                        <button onClick={onClose} className="px-4 py-1 rounded-sm mt-4 ml-2 bg-purple_1 text-black_1 border border-black_1">
+                            Cancelar
+                        </button>
+                    </div>
+                    
                 </form>
             </div>
         </div>

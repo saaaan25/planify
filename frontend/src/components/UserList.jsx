@@ -13,7 +13,7 @@ const UsersList = ({ title, list = [], idEspacio }) => {
             </div>
             <div className="flex flex-col text-sm mt-2 bg-white text-black_1 w-full">
                 {list.map((element) => (
-                    <UserList key={element.idUsuario} id={element.idUsuario} nombreUsuario={element.nombreUsuario} title={title} />
+                    <UserList key={element.idUsuario} id={element.idUsuario} nombreUsuario={element.nombreUsuario}/>
                 ))}
                 <AddUserSpaceButton idEspacio={idEspacio}/>
             </div>
@@ -21,7 +21,7 @@ const UsersList = ({ title, list = [], idEspacio }) => {
     );
 };
 
-const UserList = ({ id, nombreUsuario, title }) => {
+const UserList = ({ id, nombreUsuario }) => {
     return (
         <div className="flex items-center hover:bg-grey_1 text-xs gap-x-1 p-2">
             <MdPerson size={18}/>

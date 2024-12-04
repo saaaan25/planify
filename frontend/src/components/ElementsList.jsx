@@ -47,11 +47,11 @@ const ElementList = ({ id, name, title }) => {
     };
 
     return (
-        <div className="flex items-center hover:bg-grey_1 text-xs gap-x-1 p-2" onClick={gotoPage}>
+        <div className="flex justify-start items-center hover:bg-grey_1 text-xs gap-x-1 p-2" onClick={gotoPage}>
             { title === "Otros espacios" 
                 ? <MdFolder size={18}/>
                 : <MdDashboard size={18}/>}
-            {name}
+            <p className="flex justify-start">{name}</p>
         </div>
     );
 };

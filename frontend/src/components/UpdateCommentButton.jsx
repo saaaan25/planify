@@ -34,7 +34,8 @@ const UpdateCommentButton = ({ comentario, onUpdate }) => {
     return (
         <div>
             <button
-                className="flex text-black_1 px-3 py-2 justify-start items-center gap-x-2"
+                className="flex rounded-full hover:bg-black_1 px-3 py-2 justify-start items-center gap-x-2 
+                    hover:text-grey_1 w-[40px] h-[40px] text-black_1"
                 onClick={() => setIsModalOpen(true)}
             >
                 <FiEdit />

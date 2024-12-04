@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext"
-import { MdPerson } from "react-icons/md";
+import { MdPerson, MdClose } from "react-icons/md";
 import UpdateUserButton from "./UpdateUserButton";
 
 const UserDetailsButton = () => {
@@ -32,40 +32,41 @@ const UserDetailsModal = ({ isOpen, onClose, user }) => {
           onClick={onClose}
         >
             <div
-                className="bg-grey_1 p-6 rounded-lg shadow-xl w-[450px] min-w-[450px]"
+                className="bg-grey_1 py-6 px-10 rounded-lg shadow-xl w-[450px] min-w-[450px]"
                 onClick={(e) => e.stopPropagation()}
             >
-                <div>
-                    <h2 className="font-frankfurter">Ver perfil</h2>
+                <div className="w-full flex justify-between text-black_1 items-start">
+                    <h1 className="text-2xl font-frankfurter mb-4">Ver perfil</h1>
+                    <button onClick={onClose}>
+                        <MdClose size={20}/>
+                    </button>
                 </div>
-                <div className="grid grid-cols-2">
-                    <div className="flex flex-col ml-3 items-start justify-center">
-                        <img src={user.imagenUrl} alt="profile" />
-                        <div className="mt-3">
+                <div className="grid grid-cols-2 gap-x-5">
+                    <div className="flex flex-col items-start justify-center">
+                        <div className="rounded-full w-[150px] h-[150px] ml-2">
+                            <img src={user.imagenUrl} alt="profile" className="rounded-full w-[150px] h-[150px]"/>
+                        </div>
+                        <div className="mt-3 flex justify-center w-full">
                             <p className="font-bold">{user.nombreUsuario}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-y-3 text-xs mr-3 w-full">
-                        <div className="flex justify-start w-full">
-                            <p className="font-bold">Nombre</p>
-                            <p className="py-1 px-2 border border-black_1">{user.nombre}</p>
+                    <div className="flex flex-col justify-start w-full">
+                        <div className="flex flex-col gap-y-2 text-xs mr-3 w-full justify-start mb-3">
+                            <p className="font-bold flex justify-start">Nombre</p>
+                            <p className="py-1 px-2 border border-black_1 flex justify-start bg-white w-full">{user.nombre}</p>
+                        </div>
+                        <div className="flex flex-col gap-y-2 text-xs mr-3 w-full mb-3">
+                            <p className="font-bold flex justify-start">Apellido</p>
+                            <p className="py-1 px-2 border border-black_1 flex justify-start bg-white w-full">{user.apellido}</p> 
+                        </div>
+                        <div className="flex flex-col gap-y-2 text-xs mr-3 w-full">
+                            <p className="font-bold flex justify-start">Correo</p>
+                            <p className="py-1 px-2 border border-black_1 flex justify-start bg-white w-full">{user.email}</p>        
                         </div>
                     </div>
-                    <div className="flex flex-col gap-y-3 text-xs mr-3 w-full">
-                        <div className="flex justify-start w-full">
-                            <p className="font-bold">Apellido</p>
-                            <p className="py-1 px-2 border border-black_1">{user.apellido}</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-y-3 text-xs mr-3 w-full">
-                        <div className="flex justify-start w-full">
-                            <p className="font-bold">Correo</p>
-                            <p className="py-1 px-2 border border-black_1">{user.email}</p>
-                        </div>
-                    </div>
-                    <div>
-                        <UpdateUserButton />
-                    </div>
+                </div>
+                <div className="flex justify-center w-full">
+                    <UpdateUserButton />
                 </div>
             </div>
         </div>
